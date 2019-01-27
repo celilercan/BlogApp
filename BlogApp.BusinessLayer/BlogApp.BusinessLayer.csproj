@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ValueInjecter" Version="3.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlogApp.Core\BlogApp.Core.csproj" />
+    <ProjectReference Include="..\BlogApp.Data\BlogApp.Data.csproj" />
+    <ProjectReference Include="..\BlogApp.DTO\BlogApp.DTO.csproj" />
+  </ItemGroup>
+
+</Project>
