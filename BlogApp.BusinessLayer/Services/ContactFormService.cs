@@ -27,15 +27,9 @@ namespace BlogApp.BusinessLayer.Services
         {
             var result = new ResultDto<ContactFormDetailDto>();
 
-            var contactForm = new ContactForm
-            {
-                Fullname = dto.Fullname,
-                Email = dto.Email,
-                PhoneCell = dto.PhoneCell,
-                Subject = dto.Subject,
-                Message = dto.Message,
-                CreatedDate = DateTime.Now
-            };
+            var contactForm = new ContactForm { CreatedDate = DateTime.Now };
+
+            contactForm.InjectFrom(dto);
 
             _uow.ContactFormRepo.Add(contactForm);
             _uow.ContactFormRepo.Commit();
