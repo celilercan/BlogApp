@@ -73,7 +73,7 @@ namespace BlogApp.BusinessLayer.Services
 
             var totalCount = query.Count();
 
-            var resultQuery = query.Page(filter.GetPageIndex, filter.GetPageSize);
+            var resultQuery = query.Page(filter.PageIndex, filter.PageSize);
 
             result.Result = new PagedList<ContactFormDetailDto>(resultQuery.Select(x =>
                 new ContactFormDetailDto
@@ -86,7 +86,7 @@ namespace BlogApp.BusinessLayer.Services
                     Message = x.Message,
                     CreatedDate = x.CreatedDate
                 }).ToList(),
-                filter.GetPageIndex, filter.GetPageSize, totalCount);
+                filter.PageIndex, filter.PageSize, totalCount);
 
             return result;
 

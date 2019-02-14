@@ -6,22 +6,22 @@ namespace BlogApp.DTO.Common
 {
     public class BaseFilterDto
     {
-        public int? PageIndex { get; set; }
-        public int? PageSize { get; set; }
-
-        public int GetPageIndex
+        private int _pageIndex { get; set; }
+        private int _pageSize { get; set; }
+        public int PageIndex
         {
-            get
+            get { return _pageIndex; }
+            set
             {
-                return PageIndex ?? 1;
+                _pageIndex = value <= default(int) ? 1 : value;
             }
         }
-
-        public int GetPageSize
+        public int PageSize
         {
-            get
+            get { return _pageSize; }
+            set
             {
-                return PageSize ?? 20;
+                _pageIndex = value <= default(int) ? 20 : value;
             }
         }
     }

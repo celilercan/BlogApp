@@ -136,7 +136,7 @@ namespace BlogApp.BusinessLayer.Services
 
             var totalCount = query.Count();
 
-            var resultQuery = query.Page(filter.GetPageIndex, filter.GetPageSize);
+            var resultQuery = query.Page(filter.PageIndex, filter.PageSize);
 
             result.Result = new PagedList<BlogListDto>(resultQuery.Select(x => new BlogListDto
             {
@@ -147,7 +147,7 @@ namespace BlogApp.BusinessLayer.Services
                 ViewCount = x.ViewCount,
                 Keywords = x.Keywords,
                 CreatedDate = x.CreatedDate
-            }).ToList(), filter.GetPageIndex, filter.GetPageSize, totalCount);
+            }).ToList(), filter.PageIndex, filter.PageSize, totalCount);
 
             return result;
         }
