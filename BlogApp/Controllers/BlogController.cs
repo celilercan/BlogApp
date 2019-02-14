@@ -26,52 +26,52 @@ namespace BlogApp.Controllers
 
         [Route("getList")]
         [HttpPost]
-        public IActionResult BlogList([FromBody] BlogFilterDto model)
+        public async Task<IActionResult> BlogList([FromBody] BlogFilterDto model)
         {
-            return Ok(_blogService.GetBlogList(model));
+            return Ok(await _blogService.GetBlogList(model));
         }
 
         [Route("save")]
         [HttpPost]
-        public IActionResult SaveBlog([FromBody] BlogSaveDto model)
+        public async Task<IActionResult> SaveBlog([FromBody] BlogSaveDto model)
         {
-            return Ok(_blogService.SaveBlog(model));
+            return Ok(await _blogService.SaveBlog(model));
         }
 
         [Route("changeBlogStatus")]
         [HttpPost]
-        public IActionResult ChangeStatus([FromBody] int id, bool isActive)
+        public async Task<IActionResult> ChangeStatus([FromBody] int id, bool isActive)
         {
-            return Ok(_blogService.ChangeBlogStatus(id, isActive));
+            return Ok(await _blogService.ChangeBlogStatus(id, isActive));
         }
 
         [Route("getBlog/{id:int}")]
         [HttpGet]
-        public IActionResult GetBlogDetail(int id)
+        public async Task<IActionResult> GetBlogDetail(int id)
         {
-            return Ok(_blogService.GetBlogById(id));
+            return Ok(await _blogService.GetBlogById(id));
         }
 
         [Route("addComment")]
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult AddComment([FromBody] BlogCommentAddDto model)
+        public async Task<IActionResult> AddComment([FromBody] BlogCommentAddDto model)
         {
-            return Ok(_blogService.AddBlogComment(model));
+            return Ok(await _blogService.AddBlogComment(model));
         }
 
         [Route("changeCommentStatus")]
         [HttpPost]
-        public IActionResult ChangeCommentStatus([FromBody] int id, bool isActive)
+        public async Task<IActionResult> ChangeCommentStatus([FromBody] int id, bool isActive)
         {
-            return Ok(_blogService.ChangeBlogCommentStatus(id, isActive));
+            return Ok(await _blogService.ChangeBlogCommentStatus(id, isActive));
         }
 
         [Route("getWaitingApproveComments")]
         [HttpGet]
-        public IActionResult GetWaitingApproveComments()
+        public async Task<IActionResult> GetWaitingApproveComments()
         {
-            return Ok(_blogService.GetWaitingApproveComments());
+            return Ok(await _blogService.GetWaitingApproveComments());
         }
     }
 }

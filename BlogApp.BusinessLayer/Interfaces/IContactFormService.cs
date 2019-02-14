@@ -4,14 +4,15 @@ using BlogApp.DTO.ContactForm;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BlogApp.BusinessLayer.Interfaces
 {
     public interface IContactFormService
     {
-        ResultDto<ContactFormDetailDto> AddContactForm(ContactFormAddDto dto);
-        ResultDto<ContactFormDetailDto> GetContactFormById(int id);
-        ResultDto<PagedList<ContactFormDetailDto>> GetList(BaseFilterDto filter);
-        bool DeleteContactForm(int id);
+        Task<ResultDto<ContactFormDetailDto>> AddContactForm(ContactFormAddDto dto);
+        Task<ResultDto<ContactFormDetailDto>> GetContactFormById(int id);
+        Task<ResultDto<PagedList<ContactFormDetailDto>>> GetList(BaseFilterDto filter);
+        Task<bool> DeleteContactForm(int id);
     }
 }

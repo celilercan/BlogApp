@@ -26,9 +26,9 @@ namespace BlogApp.Controllers
 
         [Route("login")]
         [HttpPost]
-        public IActionResult Login([FromBody] LoginViewModel model)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
-            var userResult = _userService.Login(model.Email, model.Password);
+            var userResult = await _userService.Login(model.Email, model.Password);
 
             if (!userResult.IsSuccess)
             {

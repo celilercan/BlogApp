@@ -4,18 +4,19 @@ using BlogApp.DTO.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BlogApp.BusinessLayer.Interfaces
 {
     public interface IBlogService
     {
-        ResultDto<BlogDetailDto> SaveBlog(BlogSaveDto dto);
-        ResultDto<BlogDetailDto> GetBlogById(int id);
-        ResultDto<BlogDetailDto> ChangeBlogStatus(int id, bool isActive);
-        ResultDto<PagedList<BlogListDto>> GetBlogList(BlogFilterDto filter);
-        ResultDto<BlogCommentDetailDto> ChangeBlogCommentStatus(int id, bool isActive);
-        ResultDto<BlogCommentDetailDto> AddBlogComment(BlogCommentAddDto dto);
-        ResultDto<List<BlogCommentDetailDto>> GetWaitingApproveComments();
-        bool DeleteComment(int id);
+        Task<ResultDto<BlogDetailDto>> SaveBlog(BlogSaveDto dto);
+        Task<ResultDto<BlogDetailDto>> GetBlogById(int id);
+        Task<ResultDto<BlogDetailDto>> ChangeBlogStatus(int id, bool isActive);
+        Task<ResultDto<PagedList<BlogListDto>>> GetBlogList(BlogFilterDto filter);
+        Task<ResultDto<BlogCommentDetailDto>> ChangeBlogCommentStatus(int id, bool isActive);
+        Task<ResultDto<BlogCommentDetailDto>> AddBlogComment(BlogCommentAddDto dto);
+        Task<ResultDto<List<BlogCommentDetailDto>>> GetWaitingApproveComments();
+        Task<bool> DeleteComment(int id);
     }
 }

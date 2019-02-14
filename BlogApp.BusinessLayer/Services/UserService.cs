@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using BlogApp.BusinessLayer.Interfaces;
 using BlogApp.Core.Enums;
 using BlogApp.Core.Extensions;
@@ -25,7 +26,7 @@ namespace BlogApp.BusinessLayer.Services
             _encryptionService = encryptionService;
         }
 
-        public ResultDto<UserDetailDto> ChangeStatus(int id, bool isActive)
+        public async Task<ResultDto<UserDetailDto>> ChangeStatus(int id, bool isActive)
         {
             var result = new ResultDto<UserDetailDto> { Result = new UserDetailDto() };
             var user = _uow.UserRepo.Query().FirstOrDefault(x => x.Id == id);
@@ -35,13 +36,13 @@ namespace BlogApp.BusinessLayer.Services
                 return result;
             }
             user.IsActive = isActive;
-            _uow.UserRepo.Commit();
+            await _uow.UserRepo.CommitAsync();
 
             result.Result.InjectFrom(user);
             return result;
         }
 
-        public ResultDto<UserDetailDto> ChangeUserPassword(ChangeUserPasswordDto dto)
+        public async Task<ResultDto<UserDetailDto>> ChangeUserPassword(ChangeUserPasswordDto dto)
         {
             var result = new ResultDto<UserDetailDto> { Result = new UserDetailDto() };
 
@@ -68,14 +69,14 @@ namespace BlogApp.BusinessLayer.Services
             }
 
             user.Password = encryptedNewPassword;
-            _uow.UserRepo.Commit();
+            await _uow.UserRepo.CommitAsync();
 
             result.Result.InjectFrom(user);
 
             return result;
         }
 
-        public ResultDto<UserDetailDto> GetDetailById(int id)
+        public async Task<ResultDto<UserDetailDto>> GetDetailById(int id)
         {
             var result = new ResultDto<UserDetailDto> { Result = new UserDetailDto() };
 
@@ -92,7 +93,7 @@ namespace BlogApp.BusinessLayer.Services
             return result;
         }
 
-        public ResultDto<List<UserListDto>> GetList()
+        public async Task<ResultDto<List<UserListDto>>> GetList()
         {
             var result = new ResultDto<List<UserListDto>>();
 
@@ -110,7 +111,7 @@ namespace BlogApp.BusinessLayer.Services
             return result;
         }
 
-        public ResultDto<UserDetailDto> Login(string email, string password)
+        public async Task<ResultDto<UserDetailDto>> Login(string email, string password)
         {
             var result = new ResultDto<UserDetailDto> { Result = new UserDetailDto() };
 
@@ -132,7 +133,7 @@ namespace BlogApp.BusinessLayer.Services
             return result;
         }
 
-        public ResultDto<UserDetailDto> SaveUser(UserSaveDto dto)
+        public async Task<ResultDto<UserDetailDto>> SaveUser(UserSaveDto dto)
         {
             var result = new ResultDto<UserDetailDto> { Result = new UserDetailDto() };
 
@@ -154,9 +155,9 @@ namespace BlogApp.BusinessLayer.Services
             user.InjectFrom(dto);
 
             if (dto.Id <= default(int))
-                _uow.UserRepo.Add(user);
+                await _uow.UserRepo.AddAsync(user);
 
-            _uow.UserRepo.Commit();
+            await _uow.UserRepo.CommitAsync();
 
             result.Result.InjectFrom(user);
 

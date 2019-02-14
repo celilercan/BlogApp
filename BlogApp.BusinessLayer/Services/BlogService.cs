@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BlogApp.BusinessLayer.Services
 {
@@ -23,7 +24,7 @@ namespace BlogApp.BusinessLayer.Services
             _uow = uow;
         }
 
-        public ResultDto<BlogCommentDetailDto> AddBlogComment(BlogCommentAddDto dto)
+        public async Task<ResultDto<BlogCommentDetailDto>> AddBlogComment(BlogCommentAddDto dto)
         {
             var result = new ResultDto<BlogCommentDetailDto>();
 
@@ -36,15 +37,15 @@ namespace BlogApp.BusinessLayer.Services
                 CreatedDate = DateTime.Now
             };
 
-            _uow.BlogCommentRepo.Add(blogComment);
-            _uow.BlogCommentRepo.Commit();
+            await _uow.BlogCommentRepo.AddAsync(blogComment);
+            await _uow.BlogCommentRepo.CommitAsync();
 
             result.Result.InjectFrom(blogComment);
 
             return result;
         }
 
-        public ResultDto<BlogCommentDetailDto> ChangeBlogCommentStatus(int id, bool isActive)
+        public async Task<ResultDto<BlogCommentDetailDto>> ChangeBlogCommentStatus(int id, bool isActive)
         {
             var result = new ResultDto<BlogCommentDetailDto>();
 
@@ -57,14 +58,14 @@ namespace BlogApp.BusinessLayer.Services
             }
 
             blogComment.IsActive = isActive;
-            _uow.BlogCommentRepo.Commit();
+            await _uow.BlogCommentRepo.CommitAsync();
 
             result.Result.InjectFrom(blogComment);
 
             return result;
         }
 
-        public ResultDto<BlogDetailDto> ChangeBlogStatus(int id, bool isActive)
+        public async Task<ResultDto<BlogDetailDto>> ChangeBlogStatus(int id, bool isActive)
         {
             var result = new ResultDto<BlogDetailDto>();
 
@@ -77,26 +78,26 @@ namespace BlogApp.BusinessLayer.Services
             }
 
             blog.IsActive = isActive;
-            _uow.BlogRepo.Commit();
+            await _uow.BlogRepo.CommitAsync();
 
             result.Result.InjectFrom(blog);
 
             return result;
         }
 
-        public bool DeleteComment(int id)
+        public async Task<bool> DeleteComment(int id)
         {
             var comment = _uow.BlogCommentRepo.Query().FirstOrDefault(x => x.Id == id);
             if (comment == null) return false;
-            _uow.BlogCommentRepo.Delete(comment);
-            _uow.BlogCommentRepo.Commit();
+            await _uow.BlogCommentRepo.DeleteAsync(comment);
+            await _uow.BlogCommentRepo.CommitAsync();
             return true;
         }
 
-        public ResultDto<BlogDetailDto> GetBlogById(int id)
+        public async Task<ResultDto<BlogDetailDto>> GetBlogById(int id)
         {
             var result = new ResultDto<BlogDetailDto>();
-
+            
             var blog = _uow.BlogRepo.Query().FirstOrDefault(x => x.Id == id);
 
             if (blog == null)
@@ -124,7 +125,7 @@ namespace BlogApp.BusinessLayer.Services
             return result;
         }
 
-        public ResultDto<PagedList<BlogListDto>> GetBlogList(BlogFilterDto filter)
+        public async Task<ResultDto<PagedList<BlogListDto>>> GetBlogList(BlogFilterDto filter)
         {
             var result = new ResultDto<PagedList<BlogListDto>>();
 
@@ -152,7 +153,7 @@ namespace BlogApp.BusinessLayer.Services
             return result;
         }
 
-        public ResultDto<List<BlogCommentDetailDto>> GetWaitingApproveComments()
+        public async Task<ResultDto<List<BlogCommentDetailDto>>> GetWaitingApproveComments()
         {
             var result = new ResultDto<List<BlogCommentDetailDto>>();
 
@@ -170,7 +171,7 @@ namespace BlogApp.BusinessLayer.Services
             return result;
         }
 
-        public ResultDto<BlogDetailDto> SaveBlog(BlogSaveDto dto)
+        public async Task<ResultDto<BlogDetailDto>> SaveBlog(BlogSaveDto dto)
         {
             var result = new ResultDto<BlogDetailDto>();
 
@@ -187,9 +188,9 @@ namespace BlogApp.BusinessLayer.Services
             blog.InjectFrom(dto);
 
             if (dto.Id <= default(int))
-                _uow.BlogRepo.Add(blog);
+                await _uow.BlogRepo.AddAsync(blog);
 
-            _uow.BlogRepo.Commit();
+            await _uow.BlogRepo.CommitAsync();
 
             return result;
         }

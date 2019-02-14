@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BlogApp.Data.Infrastructure.Repository
 {
@@ -81,16 +82,6 @@ namespace BlogApp.Data.Infrastructure.Repository
             return ApplyInclude().Where(where).FirstOrDefault();
         }
 
-        public T GetById(long id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public T GetByKey(string key)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<T> GetMany(Expression<Func<T, bool>> where)
         {
             return ApplyInclude().Where(where).ToList();
@@ -117,5 +108,49 @@ namespace BlogApp.Data.Infrastructure.Repository
         {
             DataContext.SaveChanges();
         }
+
+        #region Async
+        public async Task AddAsync(T entity)
+        {
+            await DbSet.AddAsync(entity);
+        }
+
+        public async Task AttachAsync(T entity)
+        {
+            DbSet.Attach(entity);
+            DataContext.Entry(entity).State = EntityState.Modified;
+        }
+
+        public async Task DeleteAsync(T entity)
+        {
+            DbSet.Remove(entity);
+        }
+
+        public async Task DeleteAsync(Expression<Func<T, bool>> predicate)
+        {
+            var objects = DbSet.Where(predicate).AsEnumerable();
+
+            foreach (var obj in objects)
+            {
+                DbSet.Remove(obj);
+            }
+        }
+
+        public async Task<T> GetAsync(Expression<Func<T, bool>> where)
+        {
+            return await ApplyInclude().Where(where).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<T>> GetManyAsync(Expression<Func<T, bool>> where)
+        {
+            return await ApplyInclude().Where(where).ToListAsync();
+        }
+
+        public async Task CommitAsync()
+        {
+            await DataContext.SaveChangesAsync();
+        }
+
+        #endregion
     }
 }

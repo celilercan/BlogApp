@@ -27,50 +27,50 @@ namespace BlogApp.Controllers
 
         [Route("getList")]
         [HttpGet]
-        public IActionResult GetList()
+        public async Task<IActionResult> GetList()
         {
-            return Ok(_userService.GetList());
+            return Ok(await _userService.GetList());
         }
 
         [Route("getInfo/{id:int}")]
         [HttpGet]
         [ActionAccess(AllowedUserTypes = new[] { UserType.Administrator })]
-        public IActionResult GetUserInfo(int id)
+        public async Task<IActionResult> GetUserInfo(int id)
         {
-            return Ok(_userService.GetDetailById(id));
+            return Ok(await _userService.GetDetailById(id));
         }
 
         [Route("me")]
         [HttpGet]
         [ActionAccess(AllowedUserTypes = new[] { UserType.Administrator, UserType.Author })]
-        public IActionResult GetMyInfo()
+        public async Task<IActionResult> GetMyInfo()
         {
             var id = User.Identity.GetUserId();
-            return Ok(_userService.GetDetailById(id));
+            return Ok(await _userService.GetDetailById(id));
         }
 
         [Route("save")]
         [HttpPost]
         [ActionAccess(AllowedUserTypes = new[] { UserType.Administrator })]
-        public IActionResult SaveUser([FromBody] UserSaveDto model)
+        public async Task<IActionResult> SaveUser([FromBody] UserSaveDto model)
         {
-            return Ok(_userService.SaveUser(model));
+            return Ok(await _userService.SaveUser(model));
         }
 
         [Route("changeStatus")]
         [HttpPost]
         [ActionAccess(AllowedUserTypes = new[] { UserType.Administrator })]
-        public IActionResult ChangeUserStatus([FromBody] int id, bool isActive)
+        public async Task<IActionResult> ChangeUserStatus([FromBody] int id, bool isActive)
         {
-            return Ok(_userService.ChangeStatus(id, isActive));
+            return Ok(await _userService.ChangeStatus(id, isActive));
         }
 
         [Route("changePassword")]
         [HttpPost]
         [ActionAccess(AllowedUserTypes = new[] { UserType.Administrator, UserType.Author })]
-        public IActionResult ChangePassword([FromBody] ChangeUserPasswordDto model)
+        public async Task<IActionResult> ChangePassword([FromBody] ChangeUserPasswordDto model)
         {
-            return Ok(_userService.ChangeUserPassword(model));
+            return Ok(await _userService.ChangeUserPassword(model));
         }
     }
 }

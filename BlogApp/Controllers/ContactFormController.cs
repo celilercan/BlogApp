@@ -28,32 +28,32 @@ namespace BlogApp.Controllers
         [Route("add")]
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult AddContactForm([FromBody] ContactFormAddDto model)
+        public async Task<IActionResult> AddContactForm([FromBody] ContactFormAddDto model)
         {
-            return Ok(_contactFormService.AddContactForm(model));
+            return Ok(await _contactFormService.AddContactForm(model));
         }
 
         [Route("getList")]
         [HttpGet]
         [ActionAccess(AllowedUserTypes = new[] { UserType.Administrator })]
-        public IActionResult GetList(BaseFilterDto model)
+        public async Task<IActionResult> GetList(BaseFilterDto model)
         {
-            return Ok(_contactFormService.GetList(model));
+            return Ok(await _contactFormService.GetList(model));
         }
 
         [Route("getbyid/{id:int}")]
         [HttpGet]
         [ActionAccess(AllowedUserTypes = new[] { UserType.Administrator })]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return Ok(_contactFormService.GetContactFormById(id));
+            return Ok(await _contactFormService.GetContactFormById(id));
         }
         
         [HttpDelete("{id}")]
         [ActionAccess(AllowedUserTypes = new[] { UserType.Administrator })]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return Ok(_contactFormService.DeleteContactForm(id));
+            return Ok(await _contactFormService.DeleteContactForm(id));
         }
 
     }

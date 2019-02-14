@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BlogApp.BusinessLayer.Services
 {
@@ -23,7 +24,7 @@ namespace BlogApp.BusinessLayer.Services
             _uow = uow;
         }
 
-        public ResultDto<ContactFormDetailDto> AddContactForm(ContactFormAddDto dto)
+        public async Task<ResultDto<ContactFormDetailDto>> AddContactForm(ContactFormAddDto dto)
         {
             var result = new ResultDto<ContactFormDetailDto>();
 
@@ -31,24 +32,24 @@ namespace BlogApp.BusinessLayer.Services
 
             contactForm.InjectFrom(dto);
 
-            _uow.ContactFormRepo.Add(contactForm);
-            _uow.ContactFormRepo.Commit();
+            await _uow.ContactFormRepo.AddAsync(contactForm);
+            await _uow.ContactFormRepo.CommitAsync();
 
             result.Result.InjectFrom(contactForm);
 
             return result;
         }
 
-        public bool DeleteContactForm(int id)
+        public async Task<bool> DeleteContactForm(int id)
         {
             var contactForm = _uow.ContactFormRepo.Query().FirstOrDefault(x => x.Id == id);
             if (contactForm == null) return false;
-            _uow.ContactFormRepo.Delete(contactForm);
-            _uow.ContactFormRepo.Commit();
+            await _uow.ContactFormRepo.DeleteAsync(contactForm);
+            await _uow.ContactFormRepo.CommitAsync();
             return true;
         }
 
-        public ResultDto<ContactFormDetailDto> GetContactFormById(int id)
+        public async Task<ResultDto<ContactFormDetailDto>> GetContactFormById(int id)
         {
             var result = new ResultDto<ContactFormDetailDto>();
 
@@ -65,7 +66,7 @@ namespace BlogApp.BusinessLayer.Services
             return result;
         }
 
-        public ResultDto<PagedList<ContactFormDetailDto>> GetList(BaseFilterDto filter)
+        public async  Task<ResultDto<PagedList<ContactFormDetailDto>>> GetList(BaseFilterDto filter)
         {
             var result = new ResultDto<PagedList<ContactFormDetailDto>>();
 
